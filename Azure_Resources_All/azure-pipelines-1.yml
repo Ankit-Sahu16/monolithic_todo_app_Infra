@@ -4,7 +4,7 @@ trigger:
     include:
       - main
 
-pool: TerraPulse agent
+pool: mera_agent
 
 stages:
   - stage: stage1
