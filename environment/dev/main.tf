@@ -11,7 +11,7 @@ module "RG" {
 
 module "Virtual_network"{
     depends_on = [module.RG]
-    source= "../../module/vnet"
+    source= "../../module/Virtual_network"
     vnet= var.vnet1
 }
 
@@ -39,8 +39,14 @@ module "Network_security_group"{
     nsg=var.nsg1
 }
 
+# module "key_vault"{
+#     depends_on= [module.RG]
+#     source= "../../module/Key_vault"
+#     key_vault= var.key_vault1
+# }
+
 module "virtual_machine"{
     depends_on= [module.Network_interface_card,module.Network_security_group]
-    source= "../../module/VM"
+    source= "../../module/virtual_machine"
     virtual_machine= var.virtual_machine1
 }

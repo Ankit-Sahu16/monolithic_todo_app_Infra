@@ -1,2 +1,0 @@
-
-# Azure_Resources_All

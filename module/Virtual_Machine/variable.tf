@@ -4,8 +4,9 @@ variable "virtual_machine"{
         rg_name= string
         location= string
         vm_size= string
-        admin_username= string
-        admin_password= string
+        # admin_username= string
+        # admin_password= string
         nic_name= string
+        key_vault_name= string
     }))
 }

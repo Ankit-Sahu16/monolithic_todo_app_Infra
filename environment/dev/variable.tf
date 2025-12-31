@@ -73,8 +73,18 @@ variable "virtual_machine1"{
         rg_name= string
         location= string
         vm_size= string
-        admin_username= string
-        admin_password= string
+        # admin_username= string
+        # admin_password= string
         nic_name= string
+        key_vault_name= string
     }))
 }
+
+# variable "key_vault1" {
+#     type=map(object({
+#         Key_vault_name= string
+#         rg_name= string
+#         location = string
+#         sku_name = string
+#     }))
+# }
