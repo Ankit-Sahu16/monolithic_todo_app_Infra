@@ -43,6 +43,17 @@ stages:
       displayName: terraform plan
       dependsOn: job1
       steps :
+    
+      - task: TerraformTask@5
+        displayName: terraform_init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          backendServiceArm: 'newservice'
+          backendAzureRmStorageAccountName: 'monolithicstg'
+          backendAzureRmContainerName: 'monocontainer'
+          backendAzureRmKey: 'infra.tfstate'
       - task: TerraformTask@5
         displayName: terraform_plan
         inputs:
