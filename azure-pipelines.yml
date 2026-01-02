@@ -5,15 +5,34 @@ stages:
  - stage : stage1
    displayName: install_init_fmt_validate
    jobs : 
-    - job : Terraform_install_and_init_job1
-      displayName : job1
+    - job : Job1
+      displayName : Terraform_install_and_init_validate
       steps :
       
       - task: TerraformInstaller@1
         displayName : terraform_Install
         inputs:
           terraformVersion: 'latest'
-  
+      - task: TerraformTask@5
+        displayName: terraform_init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+      - task: TerraformTask@5
+        displayName: terraform fmt
+        inputs:
+          provider: 'azurerm'
+          command: 'custom'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          commandOptions: 'fmt'
+          outputTo: 'console'
+      - task: TerraformTask@5
+        displayName: Terrfaorm_validate
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
      
     
     
