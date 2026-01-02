@@ -24,13 +24,14 @@ stages:
           backendAzureRmContainerName: 'monocontainer'
           backendAzureRmKey: 'infra.tfstate'
       - task: TerraformTask@5
-        displayName: terraform fmt
+        displayName: terraform_fmt
         inputs:
           provider: 'azurerm'
           command: 'custom'
           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
-          commandOptions: 'fmt'
           outputTo: 'console'
+          customCommand: 'fmt'
+          environmentServiceNameAzureRM: 'newservice'
       - task: TerraformTask@5
         displayName: Terrfaorm_validate
         inputs:
