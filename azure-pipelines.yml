@@ -1,6 +1,6 @@
 trigger:
 - main
-pool : Infra-agent
+pool : Infra-agent2
 stages:
  - stage : stage1
    displayName: install_init_fmt_validate
