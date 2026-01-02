@@ -3,7 +3,7 @@ trigger:
 pool : Infra-agent2
 stages:
  - stage : stage1
-   displayName: install_init_fmt_validate
+   displayName: install_init_fmt_validate_plan
    jobs : 
     - job : Job1
       displayName : Terraform_install_init_validate
@@ -38,6 +38,17 @@ stages:
           provider: 'azurerm'
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
-     
+
+    - job : job2 
+      displayName: terraform plan
+      dependsOn: job1
+      steps :
+      - task: TerraformTask@5
+        displayName: terraform_plan
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          environmentServiceNameAzureRM: 'newservice'
     
     
