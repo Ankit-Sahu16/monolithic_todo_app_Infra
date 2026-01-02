@@ -4,10 +4,13 @@ pool : Infra-agent2
 stages:
  - stage : stage1
    displayName: install_init_fmt_validate
-   jobs :
+   jobs : 
     - job : Terraform_install_and_init_job1
+      displayName : job1
       steps :
+      
       - task: TerraformInstaller@1
+        displayName : terraform_Install
         inputs:
           terraformVersion: 'latest'
   
