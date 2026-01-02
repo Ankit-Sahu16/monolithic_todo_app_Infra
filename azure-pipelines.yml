@@ -19,6 +19,10 @@ stages:
           provider: 'azurerm'
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          backendServiceArm: 'newservice'
+          backendAzureRmStorageAccountName: 'monolithicstg'
+          backendAzureRmContainerName: 'monocontainer'
+          backendAzureRmKey: 'infra.tfstate'
       - task: TerraformTask@5
         displayName: terraform fmt
         inputs:
