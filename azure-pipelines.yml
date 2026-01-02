@@ -3,7 +3,7 @@ trigger:
 pool : Infra-agent2
 stages:
  - stage : stage1
-   displayName: install_init_fmt_validate_plan
+   displayName: install_init_fmt_validate_plan1
    jobs : 
     - job : Job1
       displayName : Terraform_install_init_validate
