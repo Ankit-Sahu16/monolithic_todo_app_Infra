@@ -116,9 +116,9 @@ stages:
           backendAzureRmKey: 'infra.tfstate'
       
       - task: TerraformTask@5
-        displayName: terraformapply
+        displayName: terraform_apply
         inputs:
           provider: 'azurerm'
           command: 'apply'
-          commandOptions: '-auto-appprove'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
           environmentServiceNameAzureRM: 'newservice'
