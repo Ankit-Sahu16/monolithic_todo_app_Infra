@@ -2,67 +2,67 @@ trigger:
 - main
 pool : Infra-agent2
 stages:
-#  - stage : stage1
-#    displayName: install_init_fmt_validate_plan1
-#    jobs : 
-#     - job : Job1
-#       displayName : Terraform_install_init_validate
-#       steps :
+ - stage : Stage1
+   displayName: install_init_fmt_validate_plan
+   jobs : 
+    - job : Job1
+      displayName : Terraform_install_init_validate
+      steps :
       
-#       - task: TerraformInstaller@1
-#         displayName : terraform_Install
-#         inputs:
-#           terraformVersion: 'latest'
-#       - task: TerraformTask@5
-#         displayName: terraform_init
-#         inputs:
-#           provider: 'azurerm'
-#           command: 'init'
-#           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
-#           backendServiceArm: 'newservice'
-#           backendAzureRmStorageAccountName: 'monolithicstg'
-#           backendAzureRmContainerName: 'monocontainer'
-#           backendAzureRmKey: 'infra.tfstate'
-#       - task: TerraformTask@5
-#         displayName: terraform_fmt
-#         inputs:
-#           provider: 'azurerm'
-#           command: 'custom'
-#           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
-#           outputTo: 'console'
-#           customCommand: 'fmt'
-#           environmentServiceNameAzureRM: 'newservice'
-#       - task: TerraformTask@5
-#         displayName: Terrfaorm_validate
-#         inputs:
-#           provider: 'azurerm'
-#           command: 'validate'
-#           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+      - task: TerraformInstaller@1
+        displayName : terraform_Install
+        inputs:
+          terraformVersion: 'latest'
+      - task: TerraformTask@5
+        displayName: terraform_init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          backendServiceArm: 'newservice'
+          backendAzureRmStorageAccountName: 'monolithicstg'
+          backendAzureRmContainerName: 'monocontainer'
+          backendAzureRmKey: 'infra.tfstate'
+      - task: TerraformTask@5
+        displayName: terraform_fmt
+        inputs:
+          provider: 'azurerm'
+          command: 'custom'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          outputTo: 'console'
+          customCommand: 'fmt'
+          environmentServiceNameAzureRM: 'newservice'
+      - task: TerraformTask@5
+        displayName: Terrfaorm_validate
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
 
-#     - job : job2 
-#       displayName: terraform plan
-#       dependsOn: job1
-#       steps :
+    - job : job2 
+      displayName: terraform plan
+      dependsOn: job1
+      steps :
     
-#       - task: TerraformTask@5
-#         displayName: terraform_init
-#         inputs:
-#           provider: 'azurerm'
-#           command: 'init'
-#           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
-#           backendServiceArm: 'newservice'
-#           backendAzureRmStorageAccountName: 'monolithicstg'
-#           backendAzureRmContainerName: 'monocontainer'
-#           backendAzureRmKey: 'infra.tfstate'
-#       - task: TerraformTask@5
-#         displayName: terraform_plan
-#         inputs:
-#           provider: 'azurerm'
-#           command: 'plan'
-#           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
-#           environmentServiceNameAzureRM: 'newservice'
+      - task: TerraformTask@5
+        displayName: terraform_init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          backendServiceArm: 'newservice'
+          backendAzureRmStorageAccountName: 'monolithicstg'
+          backendAzureRmContainerName: 'monocontainer'
+          backendAzureRmKey: 'infra.tfstate'
+      - task: TerraformTask@5
+        displayName: terraform_plan
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          environmentServiceNameAzureRM: 'newservice'
 
- - stage: stage2
+ - stage: code_quality_security_scanning
    displayName: Code_scanning
    jobs:
     - job: job1
@@ -86,3 +86,39 @@ stages:
             tflint
             tflint --recursive
           workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+
+ - stage: manual_approval
+
+   jobs:
+    - job:
+      displayName: manual_validation
+      pool: server
+      steps:
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: 'ank.211994@gmail.com'
+          approvers: 'ank.211994@gmail.com'
+
+ - stage: terraformApply
+   jobs:
+    - job: terraformInit
+      displayName: terraform_init_apply
+      steps:
+      - task: TerraformTask@5
+        displayName: terraform_init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)\environment\dev'
+          backendServiceArm: 'newservice'
+          backendAzureRmStorageAccountName: 'monolithicstg'
+          backendAzureRmContainerName: 'monocontainer'
+          backendAzureRmKey: 'infra.tfstate'
+      
+      - task: TerraformTask@5
+        displayName: terraformapply
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          commandOptions: '-auto-appprove'
+          environmentServiceNameAzureRM: 'newservice'
